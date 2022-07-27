@@ -1,3 +1,7 @@
+datastructures
+.vscode/
+build/
+
 # Prerequisites
 *.d
 
