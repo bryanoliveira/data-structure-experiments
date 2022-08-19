@@ -3,9 +3,22 @@
 
 #include "hash.hpp"
 
+#define PROBE_PREP(key, k) uint hk = hash(key); k = hk; uint i = 1;
+#ifdef LINEAR_PROBING
+#define PROBE_STEP(k) k = (hk + i) % max_n; i++;
+#else // quadratic probing
+#define PROBE_STEP(k) k = (hk + i * i) % max_n; i++;
+#endif
+
+
 template <typename TK, typename TV> HashMap<TK, TV>::HashMap(const uint max_n) {
     std::cout << "Instantiating HashMap expecting max of " << max_n
               << " elements..." << std::endl;
+#ifdef LINEAR_PROBING
+    std::cout << "Using linear probing." << std::endl;
+#else // linear probing
+    std::cout << "Using quadratic probing." << std::endl;
+#endif
     HashMap::max_n = max_n;
     HashMap::table = new HashNode[max_n];
 }
@@ -22,13 +35,19 @@ template <typename TK, typename TV> uint HashMap<TK, TV>::hash(const TK key) {
     return key % max_n;
 }
 
+template <typename TK, typename TV>
+TV &HashMap<TK, TV>::operator[](const TK key) {
+    return find(key);
+}
+
 template <typename TK, typename TV> TV &HashMap<TK, TV>::find(const TK key) {
-    uint k = hash(key);
+    uint k;
+    PROBE_PREP(key, k);
     while (table[k].status != FREE) {
         if (table[k].status == OCCUPIED && table[k].key == key)
             return table[k].value;
 
-        k = (k + 1) % max_n;
+        PROBE_STEP(k);
     }
 
     throw std::runtime_error("Key not found!");
@@ -36,9 +55,11 @@ template <typename TK, typename TV> TV &HashMap<TK, TV>::find(const TK key) {
 
 template <typename TK, typename TV>
 bool HashMap<TK, TV>::insert(const TK key, const TV value) {
-    uint k = hash(key);
-    while (table[k].status == OCCUPIED)
-        k = (k + 1) % max_n;
+    uint k;
+    PROBE_PREP(key, k);
+    while (table[k].status == OCCUPIED) {
+        PROBE_STEP(k);
+    }
 
     table[k].status = OCCUPIED;
     table[k].key = key;
@@ -48,18 +69,15 @@ bool HashMap<TK, TV>::insert(const TK key, const TV value) {
 }
 
 template <typename TK, typename TV> bool HashMap<TK, TV>::remove(const TK key) {
-    uint k = hash(key);
-    while (table[k].key != key)
-        k = (k + 1) % max_n;
+    uint k;
+    PROBE_PREP(key, k);
+    while (table[k].key != key) {
+        PROBE_STEP(k);
+    }
 
     table[k].status = DELETED;
     n--;
     return true;
-}
-
-template <typename TK, typename TV>
-TV &HashMap<TK, TV>::operator[](const TK key) {
-    return find(key);
 }
 
 // instantiate type combinations that are expected to work

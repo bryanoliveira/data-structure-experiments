@@ -1,9 +1,13 @@
 CC := g++
 SRCDIR := src
 BUILDDIR := build
-TARGET := datastructures
+TARGET := hashmap
 
 EXTRA_FLAGS := $(EXTRA_FLAGS)  # command line flags
+ifdef LINEAR_PROBING
+EXTRA_FLAGS := $(EXTRA_FLAGS) -DLINEAR_PROBING
+endif
+
 CFLAGS := -std=c++17 -Wall -O3 $(EXTRA_FLAGS)  # -g
 
 SOURCES := $(shell find $(SRCDIR) -type f -name *.cpp)
