@@ -1,27 +1,25 @@
-# Hashmap Experiments
+# Experimentos com Hashmap
 
-Implements a generic hashmap that uses quadratic probing by default. It also supports linear probing by setting the `LINEAR_PROBING=1` compiler flag.
+Este repositório implementa um hashmap genérico com sondagem quadrática. Também há supporte para sondagem linar utilizando a flag de compilador `LINEAR_PROBING=1`.
 
-## Requirements
+## Requisitos
 
-To build this program from source you'll need g++ (C++ 17), _make_ and the Boost program_options module.
+Para compilar este programa, serão necessários o g++ (C++ 17), _make_ e o módulo program_options da biblioteca Boost.
 
-You can probably install them all using `sudo apt install build-essential libboost-all-dev`. 
+Dependendo de seu sistema, pode ser possível instalá-los com `sudo apt install build-essential libboost-all-dev`. 
 
-### Development
+### Desenvolvimento
 
-For development, clang-format is recommended. You can install it with `sudo apt install clang-format`
-You should also use the [Clang-Format VSCode Extension](https://marketplace.visualstudio.com/items?itemName=xaver.clang-format) when using `clang-format`.
+Para o desenvolvimento é recomendado o clang-format. Você pode instalá-lo com `sudo apt install clang-format`
+Também é recomendada a extensão [Clang-Format para VSCode](https://marketplace.visualstudio.com/items?itemName=xaver.clang-format).
 
-## Usage
+## Uso
 
-### Building From Source
-
-- Install the requirements
-- Clone this repository
-- Building and executing:
-  - Run `make` to build and run
-  - Run `make LINEAR_PROBING=1` to build and run using linear probing (instead of quadratic)
-  - Run `make hashmap` to build
-  - Run `make run` to run with default parameters
-  - Run `make clean` to remove generated files
+- Instale os requisitos
+- Clone este repositório
+- Compilando e executando:
+  - `make` para compilar e executar com parâmetros padrão
+  - `make LINEAR_PROBING=1` para compilar e executar com sondagem linear (invés de quadrática)
+  - `make hashmap` para compilar
+  - `make run` para executar com parâmetros padrão
+  - `make clean` para deletar arquivos gerados
