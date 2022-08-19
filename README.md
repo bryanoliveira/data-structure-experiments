@@ -4,9 +4,9 @@ Este repositório implementa um hashmap genérico com sondagem quadrática. Tamb
 
 ## Requisitos
 
-Para compilar este programa, serão necessários o g++ (C++ 17), _make_ e o módulo program_options da biblioteca Boost.
+Para compilar este programa, serão necessários o g++ (C++ 17) e o _make_.
 
-Dependendo de seu sistema, pode ser possível instalá-los com `sudo apt install build-essential libboost-all-dev`. 
+Dependendo de seu sistema, pode ser possível instalá-los com `sudo apt install build-essential`. 
 
 ### Desenvolvimento
 
