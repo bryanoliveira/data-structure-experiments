@@ -3,14 +3,14 @@
 
 #include "types.hpp"
 
-#define FREE 0
+#define FREE     0
 #define OCCUPIED 1
-#define DELETED 2
+#define DELETED  2
 
 template <typename TK, typename TV> class HashMap {
   private:
     typedef struct {
-        ushort status = 0;
+        ushort status = FREE;
         TK key;
         TV value;
     } HashNode;
@@ -24,12 +24,11 @@ template <typename TK, typename TV> class HashMap {
     ~HashMap();
     uint size();
     uint hash(const TK key);
-    TV& find(const TK key);
+    TV &find(const TK key);
     bool insert(const TK key, const TV value);
     bool remove(const TK key);
 
-    TV& operator[](const TK key);
+    TV &operator[](const TK key);
 };
-
 
 #endif
