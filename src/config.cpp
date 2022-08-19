@@ -7,7 +7,7 @@ namespace po = boost::program_options;
 
 namespace config {
 
-uint n;
+uint n = 10;
 std::string inputFileName;
 
 void load_file() {}

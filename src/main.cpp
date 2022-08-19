@@ -15,14 +15,32 @@
  */
 
 #include <iostream>
+#include <stdexcept>
+
 #include "config.hpp"
+#include "hash.hpp"
 
 int main(int argc, char **argv) {
     config::load_cmd(argc, argv);
     config::load_file();
 
-    std::cout << "Hello, World!" << std::endl;
-    std::cout << "N: " << config::n << std::endl;
+    Hash<int, int> map(config::n);
+
+    std::cout << "n: " << map.size() << std::endl;
+    map.insert(12312, 111);
+    std::cout << "n: " << map.size() << std::endl;
+    map.insert(3512, 222);
+    std::cout << "n: " << map.size() << std::endl;
+
+    std::cout << "map[3512]: " << map[3512] << std::endl;
+
+    map.remove(3512);
+    std::cout << "n: " << map.size() << std::endl;
+    try {
+        std::cout << "map[3512]: " << map[3512] << std::endl;
+    } catch (const std::runtime_error &e) {
+        std::cout << "map[3512]: " << e.what() << std::endl;
+    }
 
     return 0;
 }
