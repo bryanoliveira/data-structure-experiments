@@ -8,43 +8,60 @@
  *    - params are prefixed with p (e.g. pFillProb)
  *    - member variables are prefixed with m (e.g. mFillProb)
  *    - globals are prefixed with g (e.g. gDisplay)
- *       - the 'config' namespace doesn't follow this as the 'config::' prefix
- *         is always made explicit
  *  - methods are snake_cased
  *  - Macros are UPPER_CASED (e.g. CUDA_ASSERT())
  */
 
+#include <fstream>
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
+#include <string>
 
-#include "config.hpp"
 #include "hash.hpp"
 
 int main(int argc, char **argv) {
-    config::load_cmd(argc, argv);
-    config::load_file();
+    // load input file or use a default
+    std::string filename = "inputs/test.txt";
+    if (argc >= 2)
+        filename = argv[1];
 
-    HashMap<int, int> map(10);
 
-    std::cout << "n: " << map.size() << std::endl;
-    map.insert(12312, 111);
-    std::cout << "n: " << map.size() << std::endl;
-    map.insert(3512, 222);
-    std::cout << "n: " << map.size() << std::endl;
-
-    std::cout << "map[12312=" << map.hash(12312) << "]: " << map[12312]
-              << std::endl;
-    std::cout << "map[3512=" << map.hash(12312) << "]: " << map[3512]
-              << std::endl;
-
-    map.remove(12312);
-    std::cout << "n: " << map.size() << std::endl;
-    try {
-        std::cout << "map[12312]: " << map[12312] << std::endl;
-    } catch (const std::runtime_error &e) {
-        std::cout << e.what() << std::endl;
+    // read input file and prepare buffers
+    std::cout << "Reading " << filename << std::endl;
+    std::ifstream infile(filename);
+    if (!infile.is_open()) {
+        throw std::runtime_error("Could not open file");
     }
-    std::cout << "map[3512]: " << map[3512] << std::endl;
+    std::string line;
+
+    // read n & instantiate the hashmap
+    std::getline(infile, line);
+    HashMap<int, int> map(std::stoi(line));
+
+    // read the input file and execute its operations
+    while (std::getline(infile, line)) {
+        std::istringstream iss(line);
+        std::string op;
+        int key, value;
+        iss >> op >> key;
+
+        try {
+            if (op == "insert") {
+                iss >> value;
+                map.insert(key, value);
+            } else if (op == "remove") {
+                map.remove(key);
+            } else if (op == "find") {
+                std::cout << "map[" << key << "=" << map.hash(key)
+                          << "]: " << map.find(key) << std::endl;
+            } else {
+                throw std::runtime_error("Unknown operation");
+            }
+        } catch (const std::runtime_error &e) {
+            std::cout << e.what() << std::endl;
+        }
+    }
 
     return 0;
 }

@@ -1,0 +1,10 @@
+5
+insert 10 123
+insert 5 321
+find 10
+find 5
+insert 6 789
+remove 10
+find 5
+find 10
+find 6
