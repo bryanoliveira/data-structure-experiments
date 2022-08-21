@@ -35,6 +35,8 @@ TKV HashMap<TK, TV>::~HashMap() { delete[] HashMap::table; }
 
 TKV uint HashMap<TK, TV>::get_size() { return HashMap::n; }
 
+TKV float HashMap<TK, TV>::get_load_factor() { return HashMap::n / (float) HashMap::max_n; }
+
 TKV uint HashMap<TK, TV>::hash(const TK key) { return key % max_n; }
 
 TKV TV &HashMap<TK, TV>::operator[](const TK key) { return find(key); }

@@ -58,6 +58,8 @@ int main(int argc, char **argv) {
             } else if (op == "find") {
                 std::cout << "map[" << key << "=" << map->hash(key)
                           << "]: " << map->find(key) << std::endl;
+            } else if (op == "load_factor") {
+                std::cout << "Load factor: " << map->get_load_factor() << std::endl;
             } else {
                 std::cout << "Unknown operation '" << op << " -> " << key << "'" << std::endl;
             }
