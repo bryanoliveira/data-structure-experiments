@@ -14,15 +14,22 @@ if __name__ == "__main__":
         "--insert-ops",
         "-i",
         type=int,
-        default=10000,
-        help="Number of Insert operations",
+        default=1000,
+        help="Number of Insert operations per cycle",
     )
     parser.add_argument(
         "--remove-ops",
         "-r",
         type=int,
-        default=10000,
-        help="Number of Remove operations",
+        default=1000,
+        help="Number of Remove operations per cycle",
+    )
+    parser.add_argument(
+        "--cycles",
+        "-c",
+        type=int,
+        default=100,
+        help="Number of Insert/Remove cycles",
     )
     parser.add_argument(
         "--description", "-d", type=str, default="Test data", help="Description of the test"
@@ -35,27 +42,30 @@ if __name__ == "__main__":
 
     # prepare structures
     random.seed(args.seed)
-    hashmap_state = []
-    insert_pool = list(range(args.max_n))
     file = open(args.file, "w")
     # add headers
     file.write(f"# {args.description}\n")
     file.write(f"n {args.max_n}\n")
 
-    # generate insertions
-    file.write(f"# Inserting {args.insert_ops}\n")
-    random.shuffle(insert_pool)
-    for i in range(args.insert_ops):
-        n = insert_pool.pop(0)
-        file.write(f"insert {n} {random.randint(0, INT_MAX)}\n")
-        hashmap_state.append(n)
+    # generate data
+    for _ in range(args.cycles):
+        hashmap_state = []
+        insert_pool = list(range(args.max_n))
 
-    # generate removals
-    file.write(f"# Removing {args.remove_ops}\n")
-    random.shuffle(hashmap_state)
-    for i in range(args.remove_ops):
-        n = hashmap_state.pop(0)
-        file.write(f"remove {n}\n")
+        # generate insertions
+        file.write(f"# Inserting {args.insert_ops}\n")
+        random.shuffle(insert_pool)
+        for i in range(args.insert_ops):
+            n = insert_pool.pop(0)
+            file.write(f"insert {n} {random.randint(0, INT_MAX)}\n")
+            hashmap_state.append(n)
+
+        # generate removals
+        file.write(f"# Removing {args.remove_ops}\n")
+        random.shuffle(hashmap_state)
+        for i in range(args.remove_ops):
+            n = hashmap_state.pop(0)
+            file.write(f"remove {n}\n")
 
     file.close()
     print("Done")
