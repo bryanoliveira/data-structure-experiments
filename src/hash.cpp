@@ -49,10 +49,13 @@ TKV TV &HashMap<TK, TV>::find(const TK key) {
         PROBE_STEP(k);
     }
 
-    throw std::runtime_error("Key not found!");
+    throw std::invalid_argument("Key not found!");
 }
 
-TKV bool HashMap<TK, TV>::insert(const TK key, const TV value) {
+TKV void HashMap<TK, TV>::insert(const TK key, const TV value) {
+    if (HashMap::n == HashMap::max_n)
+        throw std::length_error("Cannot insert! HashMap is full!");
+
     uint k;
     PROBE_PREP(key, k);
     while (table[k].status == OCCUPIED) {
@@ -63,19 +66,22 @@ TKV bool HashMap<TK, TV>::insert(const TK key, const TV value) {
     table[k].key = key;
     table[k].value = value;
     n++;
-    return true;
 }
 
-TKV bool HashMap<TK, TV>::remove(const TK key) {
+TKV void HashMap<TK, TV>::remove(const TK key) {
     uint k;
     PROBE_PREP(key, k);
-    while (table[k].key != key) {
+    while (table[k].status != FREE) {
+        if (table[k].status == OCCUPIED && table[k].key == key) {
+            table[k].status = DELETED;
+            n--;
+            return;
+        }
+
         PROBE_STEP(k);
     }
 
-    table[k].status = DELETED;
-    n--;
-    return true;
+    throw std::invalid_argument("Key not found!");
 }
 
 // instantiate type combinations that are expected to work

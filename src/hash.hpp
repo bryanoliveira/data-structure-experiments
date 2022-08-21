@@ -29,8 +29,8 @@ template <typename TK, typename TV> class HashMap {
     // TODO Stats get_grouping_stats();
     uint hash(const TK key);
     TV &find(const TK key);
-    bool insert(const TK key, const TV value);
-    bool remove(const TK key);
+    void insert(const TK key, const TV value);
+    void remove(const TK key);
 
     TV &operator[](const TK key);
 };

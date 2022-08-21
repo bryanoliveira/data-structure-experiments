@@ -1,4 +1,4 @@
-5
+n 5
 insert 10 123
 insert 5 321
 find 10
