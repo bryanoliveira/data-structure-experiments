@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
 
     // read n & instantiate the hashmap
     std::getline(infile, line);
-    HashMap<int, int> map(std::stoi(line));
+    HashMap<int, int> map(std::stoi(line) + 1);
 
     // read the input file and execute its operations
     while (std::getline(infile, line)) {
@@ -62,6 +62,8 @@ int main(int argc, char **argv) {
             std::cout << e.what() << std::endl;
         }
     }
+
+    infile.close();
 
     return 0;
 }

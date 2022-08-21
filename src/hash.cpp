@@ -3,15 +3,23 @@
 
 #include "hash.hpp"
 
-#define PROBE_PREP(key, k) uint hk = hash(key); k = hk; uint i = 1;
+#define PROBE_PREP(key, k)                                                     \
+    uint hk = hash(key);                                                       \
+    k = hk;                                                                    \
+    uint i = 1;
 #ifdef LINEAR_PROBING
-#define PROBE_STEP(k) k = (hk + i) % max_n; i++;
+#define PROBE_STEP(k)                                                          \
+    k = (hk + i) % max_n;                                                      \
+    i++;
 #else // quadratic probing
-#define PROBE_STEP(k) k = (hk + i * i) % max_n; i++;
+#define PROBE_STEP(k)                                                          \
+    k = (hk + i * i) % max_n;                                                  \
+    i++;
 #endif
 
+#define TKV template <typename TK, typename TV>
 
-template <typename TK, typename TV> HashMap<TK, TV>::HashMap(const uint max_n) {
+TKV HashMap<TK, TV>::HashMap(const uint max_n) {
     std::cout << "Instantiating HashMap expecting max of " << max_n
               << " elements..." << std::endl;
 #ifdef LINEAR_PROBING
@@ -23,24 +31,15 @@ template <typename TK, typename TV> HashMap<TK, TV>::HashMap(const uint max_n) {
     HashMap::table = new HashNode[max_n];
 }
 
-template <typename TK, typename TV> HashMap<TK, TV>::~HashMap() {
-    delete[] HashMap::table;
-}
+TKV HashMap<TK, TV>::~HashMap() { delete[] HashMap::table; }
 
-template <typename TK, typename TV> uint HashMap<TK, TV>::size() {
-    return HashMap::n;
-}
+TKV uint HashMap<TK, TV>::get_size() { return HashMap::n; }
 
-template <typename TK, typename TV> uint HashMap<TK, TV>::hash(const TK key) {
-    return key % max_n;
-}
+TKV uint HashMap<TK, TV>::hash(const TK key) { return key % max_n; }
 
-template <typename TK, typename TV>
-TV &HashMap<TK, TV>::operator[](const TK key) {
-    return find(key);
-}
+TKV TV &HashMap<TK, TV>::operator[](const TK key) { return find(key); }
 
-template <typename TK, typename TV> TV &HashMap<TK, TV>::find(const TK key) {
+TKV TV &HashMap<TK, TV>::find(const TK key) {
     uint k;
     PROBE_PREP(key, k);
     while (table[k].status != FREE) {
@@ -53,8 +52,7 @@ template <typename TK, typename TV> TV &HashMap<TK, TV>::find(const TK key) {
     throw std::runtime_error("Key not found!");
 }
 
-template <typename TK, typename TV>
-bool HashMap<TK, TV>::insert(const TK key, const TV value) {
+TKV bool HashMap<TK, TV>::insert(const TK key, const TV value) {
     uint k;
     PROBE_PREP(key, k);
     while (table[k].status == OCCUPIED) {
@@ -68,7 +66,7 @@ bool HashMap<TK, TV>::insert(const TK key, const TV value) {
     return true;
 }
 
-template <typename TK, typename TV> bool HashMap<TK, TV>::remove(const TK key) {
+TKV bool HashMap<TK, TV>::remove(const TK key) {
     uint k;
     PROBE_PREP(key, k);
     while (table[k].key != key) {
