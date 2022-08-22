@@ -1,10 +1,17 @@
+# Code Unit Test Data
 n 5
 insert 10 123
 insert 5 321
+get_load_factor
+get_comparisons
 find 10
 find 5
+get_comparisons
 insert 6 789
+reset_comparisons
 remove 10
 find 5
 find 10
 find 6
+get_load_factor
+get_comparisons

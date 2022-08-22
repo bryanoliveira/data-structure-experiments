@@ -35,7 +35,13 @@ TKV HashMap<TK, TV>::~HashMap() { delete[] HashMap::table; }
 
 TKV uint HashMap<TK, TV>::get_size() { return HashMap::n; }
 
-TKV float HashMap<TK, TV>::get_load_factor() { return HashMap::n / (float) HashMap::max_n; }
+TKV uint HashMap<TK, TV>::get_comparisons() { return HashMap::comparisons; }
+
+TKV void HashMap<TK, TV>::reset_comparisons() { HashMap::comparisons = 0; }
+
+TKV float HashMap<TK, TV>::get_load_factor() {
+    return HashMap::n / (float)HashMap::max_n;
+}
 
 TKV uint HashMap<TK, TV>::hash(const TK key) { return key % max_n; }
 
@@ -44,10 +50,12 @@ TKV TV &HashMap<TK, TV>::operator[](const TK key) { return find(key); }
 TKV TV &HashMap<TK, TV>::find(const TK key) {
     uint k;
     PROBE_PREP(key, k);
+    HashMap::comparisons++;
     while (table[k].status != FREE) {
         if (table[k].status == OCCUPIED && table[k].key == key)
             return table[k].value;
 
+        HashMap::comparisons++;
         PROBE_STEP(k);
     }
 
@@ -60,7 +68,9 @@ TKV void HashMap<TK, TV>::insert(const TK key, const TV value) {
 
     uint k;
     PROBE_PREP(key, k);
+    HashMap::comparisons++;
     while (table[k].status == OCCUPIED) {
+        HashMap::comparisons++;
         PROBE_STEP(k);
     }
 
@@ -73,6 +83,7 @@ TKV void HashMap<TK, TV>::insert(const TK key, const TV value) {
 TKV void HashMap<TK, TV>::remove(const TK key) {
     uint k;
     PROBE_PREP(key, k);
+    HashMap::comparisons++;
     while (table[k].status != FREE) {
         if (table[k].status == OCCUPIED && table[k].key == key) {
             table[k].status = DELETED;
@@ -80,6 +91,7 @@ TKV void HashMap<TK, TV>::remove(const TK key) {
             return;
         }
 
+        HashMap::comparisons++;
         PROBE_STEP(k);
     }
 

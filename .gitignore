@@ -2,6 +2,9 @@ hashmap
 .vscode/
 build/
 
+inputs/*.txt
+!inputs/test.txt
+
 # Prerequisites
 *.d
 

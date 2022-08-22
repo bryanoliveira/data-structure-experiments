@@ -71,7 +71,10 @@ if __name__ == "__main__":
             n = insert_pool.pop(0)
             file.write(f"insert {n} {random.randint(0, INT_MAX)}\n")
             hashmap_state.append(n)
-        file.write(f"load_factor\n")
+
+        file.write(f"get_load_factor\n")
+        file.write(f"get_comparisons\n")
+        file.write(f"reset_comparisons\n")
 
         # generate removals
         add_log(file, f"Removing {args.remove_ops}")

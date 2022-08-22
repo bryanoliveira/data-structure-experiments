@@ -24,7 +24,8 @@ template <typename TK, typename TV> class HashMap {
     HashMap(const uint max_n);
     ~HashMap();
     uint get_size();
-    // TODO get_comparisons()
+    uint get_comparisons();
+    void reset_comparisons();
     float get_load_factor();
     // TODO Stats get_grouping_stats();
     uint hash(const TK key);

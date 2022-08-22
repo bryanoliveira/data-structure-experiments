@@ -18,18 +18,15 @@
 #include <stdexcept>
 #include <string>
 
+#include "config.hpp"
 #include "hash.hpp"
 
 int main(int argc, char **argv) {
-    // load input file or use a default
-    std::string filename = "inputs/test.txt";
-    if (argc >= 2)
-        filename = argv[1];
-
+    cfg::load_cmdline_args(argc, argv);
 
     // read input file and prepare buffers
-    std::cout << "Reading " << filename << std::endl;
-    std::ifstream infile(filename);
+    std::cout << "Reading " << cfg::filename << std::endl;
+    std::ifstream infile(cfg::filename);
     if (!infile.is_open()) {
         throw std::runtime_error("Could not open file");
     }
@@ -58,8 +55,13 @@ int main(int argc, char **argv) {
             } else if (op == "find") {
                 std::cout << "map[" << key << "=" << map->hash(key)
                           << "]: " << map->find(key) << std::endl;
-            } else if (op == "load_factor") {
+            } else if (op == "get_load_factor") {
                 std::cout << "Load factor: " << map->get_load_factor() << std::endl;
+            } else if (op == "get_comparisons") {
+                std::cout << "Total comparisons: " << map->get_comparisons() << std::endl;
+            } else if (op == "reset_comparisons") {
+                map->reset_comparisons();
+                std::cout << "Total comparisons: " << map->get_comparisons() << std::endl;
             } else {
                 std::cout << "Unknown operation '" << op << " -> " << key << "'" << std::endl;
             }
