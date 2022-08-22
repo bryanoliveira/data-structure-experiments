@@ -2,6 +2,8 @@
 #include <string>
 #include <sstream>
 
+#include "config.hpp"
+
 namespace cfg {
 
 bool csv_mode = false;
