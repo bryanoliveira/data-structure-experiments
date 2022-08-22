@@ -5,7 +5,7 @@
 
 namespace cfg {
 
-extern bool csv_mode;
+extern bool tsv_mode;
 extern std::string filename;
 
 void load_cmdline_args(int argc, char **argv);

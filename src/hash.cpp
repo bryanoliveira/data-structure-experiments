@@ -2,6 +2,7 @@
 #include <stdexcept>
 
 #include "hash.hpp"
+#include "logging.hpp"
 
 #define PROBE_PREP(key, k)                                                     \
     uint hk = hash(key);                                                       \
@@ -20,12 +21,11 @@
 #define TKV template <typename TK, typename TV>
 
 TKV HashMap<TK, TV>::HashMap(const uint max_n) {
-    std::cout << "Instantiating HashMap expecting max of " << max_n
-              << " elements..." << std::endl;
+    log("Instantiating HashMap expecting max of ", max_n, " elements...");
 #ifdef LINEAR_PROBING
-    std::cout << "Using linear probing." << std::endl;
+    log("Using linear probing.");
 #else // linear probing
-    std::cout << "Using quadratic probing." << std::endl;
+    log("Using quadratic probing.");
 #endif
     HashMap::max_n = max_n;
     HashMap::table = new HashNode[max_n];
