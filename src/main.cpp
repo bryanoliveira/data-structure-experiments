@@ -24,6 +24,7 @@
 
 int main(int argc, char **argv) {
     cfg::load_cmdline_args(argc, argv);
+    output_header();
 
     // read input file and prepare buffers
     log("Reading ", cfg::filename);

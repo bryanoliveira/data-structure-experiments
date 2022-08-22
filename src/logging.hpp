@@ -24,6 +24,13 @@ template <typename... Strings> inline void log(const Strings &... args) {
 
 //// TSV OUTPUTS
 
+inline void output_header() {
+    if (!cfg::tsv_mode)
+        return;
+
+    std::cout << "n\tops\tcomparisons\tload_factor\tinserts\tremoves\tfinds" << std::endl;
+}
+
 inline void output(uint n, uint ops, uint comparisons, float load_factor,
                    uint inserts, uint removes, uint finds) {
     if (!cfg::tsv_mode)
