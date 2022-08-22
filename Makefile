@@ -14,7 +14,7 @@ SOURCES := $(shell find $(SRCDIR) -type f -name *.cpp)
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.cpp=.o))
 
 # library references
-LIB := -lboost_program_options
+# LIB := -lboost_program_options
 
 # include external sources (e.g. -I/usr/local/cuda/include)
 INC := $()
