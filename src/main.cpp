@@ -32,6 +32,10 @@ int main(int argc, char **argv) {
         throw std::runtime_error("Could not open file");
     }
     std::string line;
+    uint n_ops = 0;
+    uint n_inserts = 0;
+    uint n_removes = 0;
+    uint n_finds = 0;
     HashMap<int, int> *map = new HashMap<int, int>(1);
 
     // read the input file and execute its operations
@@ -39,20 +43,32 @@ int main(int argc, char **argv) {
         std::istringstream iss(line);
         std::string op;
         int key, value;
-        iss >> op >> key;
+        iss >> op;
 
         try {
             if (op == "#") {
                 log(line);
             } else if (op == "n") {
+                iss >> key;
                 map = new HashMap<int, int>(key);
             } else if (op == "insert") {
-                iss >> value;
+                iss >> key >> value;
                 map->insert(key, value);
+                // update stats
+                n_ops++;
+                n_inserts++;
             } else if (op == "remove") {
+                iss >> key;
                 map->remove(key);
+                // update stats
+                n_ops++;
+                n_removes++;
             } else if (op == "find") {
+                iss >> key;
                 log("map[", key, "=", map->hash(key), "]: ", map->find(key));
+                // update stats
+                n_ops++;
+                n_finds++;
             } else if (op == "get_load_factor") {
                 log("Load factor: ", map->get_load_factor());
             } else if (op == "get_comparisons") {
@@ -61,11 +77,14 @@ int main(int argc, char **argv) {
                 map->reset_comparisons();
                 log("Total comparisons: ", map->get_comparisons());
             } else {
-                log("Unknown operation '", op, " -> ", key, "'");
+                log("Unknown operation '", op, "'");
             }
         } catch (const std::invalid_argument &e) {
             log("Error: ", e.what());
         }
+
+        output(map->get_size(), n_ops, map->get_comparisons(),
+               map->get_load_factor(), n_inserts, n_removes, n_finds);
     }
 
     infile.close();

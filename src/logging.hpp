@@ -24,12 +24,14 @@ template <typename... Strings> inline void log(const Strings &... args) {
 
 //// TSV OUTPUTS
 
-inline void output() { std::cout << std::endl; }
+inline void output(uint n, uint ops, uint comparisons, float load_factor,
+                   uint inserts, uint removes, uint finds) {
+    if (!cfg::tsv_mode)
+        return;
 
-template <typename First, typename... Strings>
-inline void output(First arg, const Strings &... rest) {
-    std::cout << arg << "\t";
-    output(rest...);
+    std::cout << n << "\t" << ops << "\t" << comparisons << "\t" << load_factor
+              << "\t" << inserts << "\t" << removes << "\t" << finds
+              << std::endl;
 }
 
 #endif

@@ -83,5 +83,7 @@ if __name__ == "__main__":
             n = hashmap_state.pop(0)
             file.write(f"remove {n}\n")
 
+        file.write(f"reset_comparisons\n")
+
     file.close()
     print("Done")
