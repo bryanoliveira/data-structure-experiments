@@ -4,6 +4,7 @@ build/
 
 inputs/*.txt
 !inputs/test.txt
+outputs/*.tsv
 
 # Prerequisites
 *.d

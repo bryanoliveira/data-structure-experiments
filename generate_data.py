@@ -3,10 +3,11 @@ import random
 
 INT_MAX = 2 ** 31 - 1
 verbose = False
+file = None
 
-def add_log(file, message):
+def add_log(message):
     if verbose:
-        file.write(f"# {message}\n")
+        file.write(f"{message}\n")
 
 
 if __name__ == "__main__":
@@ -56,7 +57,7 @@ if __name__ == "__main__":
     verbose = args.verbose
     file = open(args.file, "w")
     # add headers
-    add_log(file, args.description)
+    add_log(f"# {args.description}")
     file.write(f"n {args.max_n}\n")
 
     # generate data
@@ -65,25 +66,22 @@ if __name__ == "__main__":
         insert_pool = list(range(args.max_n))
 
         # generate insertions
-        add_log(file, f"Inserting {args.insert_ops}")
+        add_log(f"# Inserting {args.insert_ops}")
         random.shuffle(insert_pool)
         for i in range(args.insert_ops):
             n = insert_pool.pop(0)
             file.write(f"insert {n} {random.randint(0, INT_MAX)}\n")
             hashmap_state.append(n)
 
-        file.write(f"get_load_factor\n")
-        file.write(f"get_comparisons\n")
-        file.write(f"reset_comparisons\n")
+        add_log(f"get_load_factor\n")
+        add_log(f"get_comparisons\n")
 
         # generate removals
-        add_log(file, f"Removing {args.remove_ops}")
+        add_log(f"# Removing {args.remove_ops}")
         random.shuffle(hashmap_state)
         for i in range(args.remove_ops):
             n = hashmap_state.pop(0)
             file.write(f"remove {n}\n")
-
-        file.write(f"reset_comparisons\n")
 
     file.close()
     print("Done")
