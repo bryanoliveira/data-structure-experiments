@@ -16,18 +16,18 @@ template <typename TK, typename TV> class HashMap {
     } HashNode;
 
     HashNode *table;
-    uint max_n;
+    uint m;
     uint n = 0;
     uint comparisons = 0;
 
   public:
-    HashMap(const uint max_n);
+    HashMap(const uint m);
     ~HashMap();
     uint get_size();
     uint get_comparisons();
     void reset_comparisons();
     float get_load_factor();
-    // TODO Stats get_grouping_stats();
+    GroupStats get_grouping_stats();
     uint hash(const TK key);
     TV &find(const TK key);
     void insert(const TK key, const TV value);

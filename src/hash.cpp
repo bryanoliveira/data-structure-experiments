@@ -1,5 +1,10 @@
+#include <algorithm>
+#include <cmath>
 #include <iostream>
+#include <limits.h>
+#include <numeric>
 #include <stdexcept>
+#include <vector>
 
 #include "hash.hpp"
 #include "logging.hpp"
@@ -10,25 +15,25 @@
     uint i = 1;
 #ifdef LINEAR_PROBING
 #define PROBE_STEP(k)                                                          \
-    k = (hk + i) % max_n;                                                      \
+    k = (hk + i) % m;                                                          \
     i++;
 #else // quadratic probing
 #define PROBE_STEP(k)                                                          \
-    k = (hk + i * i) % max_n;                                                  \
+    k = (hk + i * i) % m;                                                      \
     i++;
 #endif
 
 #define TKV template <typename TK, typename TV>
 
-TKV HashMap<TK, TV>::HashMap(const uint max_n) {
-    log("Instantiating HashMap expecting max of ", max_n, " elements...");
+TKV HashMap<TK, TV>::HashMap(const uint m) {
+    log("Instantiating HashMap expecting max of ", m, " elements...");
 #ifdef LINEAR_PROBING
     log("Using linear probing.");
 #else // linear probing
     log("Using quadratic probing.");
 #endif
-    HashMap::max_n = max_n;
-    HashMap::table = new HashNode[max_n];
+    HashMap::m = m;
+    HashMap::table = new HashNode[m];
 }
 
 TKV HashMap<TK, TV>::~HashMap() { delete[] HashMap::table; }
@@ -40,10 +45,48 @@ TKV uint HashMap<TK, TV>::get_comparisons() { return HashMap::comparisons; }
 TKV void HashMap<TK, TV>::reset_comparisons() { HashMap::comparisons = 0; }
 
 TKV float HashMap<TK, TV>::get_load_factor() {
-    return HashMap::n / (float)HashMap::max_n;
+    return HashMap::n / (float)HashMap::m;
 }
 
-TKV uint HashMap<TK, TV>::hash(const TK key) { return key % max_n; }
+TKV GroupStats HashMap<TK, TV>::get_grouping_stats() {
+    // calculate group sizes
+    std::vector<uint> sizes;
+    uint group_size = 1;
+    TK last_key = table[0].key;
+    for (uint i = 1; i < HashMap::m; i++) {
+        if (hash(table[i].key) != hash(last_key)) {
+            sizes.push_back(group_size);
+            group_size = 1;
+            last_key = table[i].key;
+        } else {
+            group_size++;
+        }
+    }
+
+    // generate stats
+    GroupStats stats;
+    stats.total = sizes.size();
+    if (stats.total > 0) {
+        stats.min = sizes[0];
+        stats.max = sizes[0];
+        for (uint i : sizes) {
+            stats.mean += i;
+            stats.stdev += (i - stats.mean) * (i - stats.mean);
+            if (i < stats.min)
+                stats.min = i;
+            if (i > stats.max)
+                stats.max = i;
+        }
+
+        stats.mean /= stats.total;
+        stats.stdev /= stats.total;
+        stats.stdev = sqrt(stats.stdev);
+    }
+
+    return stats;
+}
+
+TKV uint HashMap<TK, TV>::hash(const TK key) { return key % m; }
 
 TKV TV &HashMap<TK, TV>::operator[](const TK key) { return find(key); }
 
@@ -63,7 +106,7 @@ TKV TV &HashMap<TK, TV>::find(const TK key) {
 }
 
 TKV void HashMap<TK, TV>::insert(const TK key, const TV value) {
-    if (HashMap::n == HashMap::max_n)
+    if (HashMap::n == HashMap::m)
         throw std::length_error("Cannot insert! HashMap is full!");
 
     uint k;

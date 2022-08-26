@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
         try {
             if (op == "#") {
                 log(line);
-            } else if (op == "n") {
+            } else if (op == "m") {
                 iss >> key;
                 map = new HashMap<int, int>(key);
             } else if (op == "insert") {
@@ -74,6 +74,12 @@ int main(int argc, char **argv) {
                 log("Load factor: ", map->get_load_factor());
             } else if (op == "get_comparisons") {
                 log("Total comparisons: ", map->get_comparisons());
+            } else if (op == "get_grouping_stats") {
+                auto stats = map->get_grouping_stats();
+                log("Grouping stats: {total: ", stats.total,
+                    ", mean: ", stats.mean, ", stdev: ", stats.stdev,
+                    ", min: ", stats.min, ", max: ", stats.max,
+                    "}");
             } else if (op == "reset_comparisons") {
                 map->reset_comparisons();
                 log("Total comparisons: ", map->get_comparisons());

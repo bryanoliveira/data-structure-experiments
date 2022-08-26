@@ -15,7 +15,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--file", "-f", type=str, default="inputs/io-test.txt", help="Output file"
     )
-    parser.add_argument("--max-n", "-n", type=int, default=1000, help="Max N")
+    parser.add_argument("--max-size", "-m", type=int, default=7853, help="Max table size (M)")
+    parser.add_argument("--max-n", "-n", type=int, default=INT_MAX, help="Max N")
     parser.add_argument(
         "--insert-ops",
         "-i",
@@ -58,7 +59,7 @@ if __name__ == "__main__":
     file = open(args.file, "w")
     # add headers
     add_log(f"# {args.description}")
-    file.write(f"n {args.max_n}\n")
+    file.write(f"m {args.table_size}\n")
 
     # generate data
     for _ in range(args.cycles):
