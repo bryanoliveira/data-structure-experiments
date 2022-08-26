@@ -141,6 +141,15 @@ TKV void HashMap<TK, TV>::remove(const TK key) {
     throw std::invalid_argument("Key not found!");
 }
 
+TKV void HashMap<TK, TV>::render() {
+    for (uint i = 0; i < n; i++) {
+        if (table[i].status == OCCUPIED)
+            std::cout << "█";
+        else
+            std::cout << "░";
+    }
+}
+
 // instantiate type combinations that are expected to work
 template class HashMap<int, int>;
 template class HashMap<int, float>;

@@ -32,6 +32,7 @@ template <typename TK, typename TV> class HashMap {
     TV &find(const TK key);
     void insert(const TK key, const TV value);
     void remove(const TK key);
+    void render();
 
     TV &operator[](const TK key);
 };

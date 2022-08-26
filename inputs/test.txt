@@ -1,7 +1,9 @@
 # Code Unit Test Data
 m 5
 insert 10 123
+stats
 insert 5 321
+stats
 get_grouping_stats
 get_load_factor
 get_comparisons
@@ -9,12 +11,15 @@ find 10
 find 5
 get_comparisons
 insert 6 789
+stats
 get_grouping_stats
 reset_comparisons
 remove 10
+stats
 get_grouping_stats
 find 5
 find 10
 find 6
 get_load_factor
 get_comparisons
+render

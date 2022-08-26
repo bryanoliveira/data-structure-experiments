@@ -78,20 +78,25 @@ int main(int argc, char **argv) {
                 auto stats = map->get_grouping_stats();
                 log("Grouping stats: {total: ", stats.total,
                     ", mean: ", stats.mean, ", stdev: ", stats.stdev,
-                    ", min: ", stats.min, ", max: ", stats.max,
-                    "}");
+                    ", min: ", stats.min, ", max: ", stats.max, "}");
             } else if (op == "reset_comparisons") {
                 map->reset_comparisons();
                 log("Total comparisons: ", map->get_comparisons());
+            } else if (op == "stats") {
+                auto stats = map->get_grouping_stats();
+                output(map->get_size(), n_ops, map->get_comparisons(),
+                       map->get_load_factor(), n_inserts, n_removes, n_finds,
+                       stats.total, stats.mean, stats.stdev, stats.min,
+                       stats.max);
+            } else if (op == "render") {
+                map->render();
+                std::cout << std::endl;
             } else {
                 log("Unknown operation '", op, "'");
             }
         } catch (const std::invalid_argument &e) {
             log("Error: ", e.what());
         }
-
-        output(map->get_size(), n_ops, map->get_comparisons(),
-               map->get_load_factor(), n_inserts, n_removes, n_finds);
     }
 
     infile.close();
