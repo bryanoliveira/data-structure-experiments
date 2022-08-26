@@ -48,7 +48,7 @@ TKV float HashMap<TK, TV>::get_load_factor() {
     return HashMap::n / (float)HashMap::m;
 }
 
-TKV GroupStats HashMap<TK, TV>::get_grouping_stats() {
+TKV Stats HashMap<TK, TV>::get_grouping_stats() {
     // calculate group sizes
     std::vector<uint> sizes;
     uint group_size = 1;
@@ -64,7 +64,7 @@ TKV GroupStats HashMap<TK, TV>::get_grouping_stats() {
     }
 
     // generate stats
-    GroupStats stats;
+    Stats stats;
     stats.total = sizes.size();
     if (stats.total > 0) {
         stats.min = sizes[0];

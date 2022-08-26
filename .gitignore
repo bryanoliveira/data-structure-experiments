@@ -1,10 +1,13 @@
 hashmap
+hashmap-q
+hashmap-l
 .vscode/
 build/
 
-inputs/*.txt
+inputs/
 !inputs/test.txt
-outputs/*.tsv
+outputs/
+runs/
 
 # Prerequisites
 *.d

@@ -27,7 +27,7 @@ template <typename TK, typename TV> class HashMap {
     uint get_comparisons();
     void reset_comparisons();
     float get_load_factor();
-    GroupStats get_grouping_stats();
+    Stats get_grouping_stats();
     uint hash(const TK key);
     TV &find(const TK key);
     void insert(const TK key, const TV value);
