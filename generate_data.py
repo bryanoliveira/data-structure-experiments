@@ -1,7 +1,9 @@
 import argparse
+import numpy as np
 import random
 
-INT_MAX = 2 ** 31 - 1
+INT_MIN = -2147483648
+INT_MAX = 2147483647
 verbose = False
 file = None
 
@@ -16,7 +18,8 @@ if __name__ == "__main__":
         "--file", "-f", type=str, default="inputs/io-test.txt", help="Output file"
     )
     parser.add_argument("--max-size", "-m", type=int, default=7853, help="Max table size (M)")
-    parser.add_argument("--max-n", "-n", type=int, default=INT_MAX, help="Max N")
+    parser.add_argument("--min-n", type=int, default=INT_MIN, help="Min N")
+    parser.add_argument("--max-n", type=int, default=INT_MAX, help="Max N")
     parser.add_argument(
         "--insert-ops",
         "-i",
@@ -65,11 +68,10 @@ if __name__ == "__main__":
     # generate data
     for _ in range(args.cycles):
         hashmap_state = []
-        insert_pool = list(range(args.max_n))
+        insert_pool = np.random.randint(args.min_n, args.max_n, args.insert_ops).tolist()
 
         # generate insertions
         add_log(f"# Inserting {args.insert_ops}")
-        random.shuffle(insert_pool)
         for i in range(args.insert_ops):
             n = insert_pool.pop(0)
             file.write(f"insert {n} {random.randint(0, INT_MAX)}\n")

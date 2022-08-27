@@ -96,7 +96,10 @@ TKV Stats HashMap<TK, TV>::get_grouping_stats() {
     return stats;
 }
 
-TKV uint HashMap<TK, TV>::hash(const TK key) { return key % m; }
+TKV uint HashMap<TK, TV>::hash(const TK key) {
+    uint h = key % HashMap::m;
+    return h >= 0 ? h : h + HashMap::m;
+}
 
 TKV TV &HashMap<TK, TV>::operator[](const TK key) { return find(key); }
 

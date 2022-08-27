@@ -28,22 +28,23 @@ inline void output_header() {
     if (!cfg::tsv_mode)
         return;
 
-    std::cout
-        << "n\tops\tcomparisons\toperations\tcollisions\tload_"
-           "factor\tinserts\tremoves\tfinds\tgroups_"
-           "total\tgroups_mean\tgroups_stdev\tgroups_min\tgroups_max"
-        << std::endl;
+    std::cout << "n\tops\tcomparisons\toperations\tcollisions\tcomps_per_op\tload_"
+                 "factor\tinserts\tremoves\tfinds\tgroups_"
+                 "total\tgroups_mean\tgroups_stdev\tgroups_min\tgroups_max"
+              << std::endl;
 }
 
-inline void output(uint n, uint ops, uint comparisons, uint operations, uint collisions, float load_factor,
-                   uint inserts, uint removes, uint finds, uint groups_total,
+inline void output(uint n, uint ops, uint comparisons, uint operations,
+                   uint collisions, float load_factor, uint inserts,
+                   uint removes, uint finds, uint groups_total,
                    float groups_mean, float groups_stdev, uint groups_min,
                    uint groups_max) {
     if (!cfg::tsv_mode)
         return;
 
     std::cout << n << "\t" << ops << "\t" << comparisons << "\t" << operations
-              << "\t" << (comparisons / static_cast<float>(operations)) << "\t" << collisions << "\t"
+              << "\t" << collisions << "\t"
+              << (comparisons / static_cast<float>(operations)) << "\t"
               << load_factor << "\t" << inserts << "\t" << removes << "\t"
               << finds << "\t" << groups_total << "\t" << groups_mean << "\t"
               << groups_stdev << "\t" << groups_min << "\t" << groups_max
