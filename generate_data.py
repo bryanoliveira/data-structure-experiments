@@ -47,7 +47,6 @@ if __name__ == "__main__":
         action="store_true",
         help="Add print operations to stdout",
     )
-    parser.add_argument("--log-every", "-l", type=int, default=10, help="Log every l operations")
     parser.add_argument("--seed", "-s", type=int, default=42, help="Random Seed")
     args = parser.parse_args()
 
@@ -64,7 +63,6 @@ if __name__ == "__main__":
     file.write(f"m {args.max_size}\n")
 
     # generate data
-    ops = 0
     for _ in range(args.cycles):
         hashmap_state = []
         insert_pool = list(range(args.max_n))
@@ -77,11 +75,6 @@ if __name__ == "__main__":
             file.write(f"insert {n} {random.randint(0, INT_MAX)}\n")
             hashmap_state.append(n)
 
-            ops += 1
-            if ops % args.log_every == 0:
-                file.write(f"stats\n")
-
-        if ops % args.log_every == 0:
             file.write(f"stats\n")
 
         # generate removals
@@ -91,9 +84,7 @@ if __name__ == "__main__":
             n = hashmap_state.pop(0)
             file.write(f"remove {n}\n")
 
-            ops += 1
-            if ops % args.log_every == 0:
-                file.write(f"stats\n")
+            file.write(f"stats\n")
 
     file.close()
     print("Done")

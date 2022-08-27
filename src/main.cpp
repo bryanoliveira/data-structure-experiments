@@ -88,7 +88,7 @@ int main(int argc, char **argv) {
             log("Total comparisons: ", map->get_comparisons());
         } else if (op == "stats") {
             auto stats = map->get_grouping_stats();
-            output(map->get_size(), n_ops, map->get_comparisons(),
+            output(map->get_size(), n_ops, map->get_comparisons(), map->get_operations(),
                    map->get_collisions(), map->get_load_factor(), n_inserts,
                    n_removes, n_finds, stats.total, stats.mean, stats.stdev,
                    stats.min, stats.max);

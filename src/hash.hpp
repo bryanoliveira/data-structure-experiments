@@ -19,6 +19,7 @@ template <typename TK, typename TV> class HashMap {
     uint m;
     uint n = 0;
     uint comparisons = 0;
+    uint operations = 0;
     uint collisions = 0;
 
   public:
@@ -27,6 +28,7 @@ template <typename TK, typename TV> class HashMap {
     uint get_size();
     uint get_collisions();
     uint get_comparisons();
+    uint get_operations();
     void reset_comparisons();
     float get_load_factor();
     Stats get_grouping_stats();
