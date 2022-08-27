@@ -1,5 +1,4 @@
 import argparse
-import numpy as np
 import random
 
 INT_MIN = -2147483648
@@ -68,7 +67,7 @@ if __name__ == "__main__":
     # generate data
     for _ in range(args.cycles):
         hashmap_state = []
-        insert_pool = np.random.randint(args.min_n, args.max_n, args.insert_ops).tolist()
+        insert_pool = random.sample(range(args.min_n, args.max_n), args.insert_ops)
 
         # generate insertions
         add_log(f"# Inserting {args.insert_ops}")
