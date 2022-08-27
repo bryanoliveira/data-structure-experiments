@@ -44,6 +44,8 @@ TKV HashMap<TK, TV>::~HashMap() { delete[] HashMap::table; }
 
 TKV uint HashMap<TK, TV>::get_size() { return HashMap::n; }
 
+TKV uint HashMap<TK, TV>::get_collisions() { return HashMap::collisions; }
+
 TKV uint HashMap<TK, TV>::get_comparisons() { return HashMap::comparisons; }
 
 TKV void HashMap<TK, TV>::reset_comparisons() { HashMap::comparisons = 0; }
@@ -120,6 +122,7 @@ TKV void HashMap<TK, TV>::insert(const TK key, const TV value) {
     HashMap::comparisons++;
     while (table[k].status == OCCUPIED) {
         HashMap::comparisons++;
+        HashMap::collisions++;
         PROBE_STEP(k);
     }
 

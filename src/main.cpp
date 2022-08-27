@@ -75,21 +75,23 @@ int main(int argc, char **argv) {
         } else if (op == "get_load_factor") {
             log("Load factor: ", map->get_load_factor());
         } else if (op == "get_comparisons") {
+            log("Total collisions: ", map->get_collisions());
+        } else if (op == "get_comparisons") {
             log("Total comparisons: ", map->get_comparisons());
         } else if (op == "get_grouping_stats") {
             auto stats = map->get_grouping_stats();
-            log("Grouping stats: {total: ", stats.total,
-                ", mean: ", stats.mean, ", stdev: ", stats.stdev,
-                ", min: ", stats.min, ", max: ", stats.max, "}");
+            log("Grouping stats: {total: ", stats.total, ", mean: ", stats.mean,
+                ", stdev: ", stats.stdev, ", min: ", stats.min,
+                ", max: ", stats.max, "}");
         } else if (op == "reset_comparisons") {
             map->reset_comparisons();
             log("Total comparisons: ", map->get_comparisons());
         } else if (op == "stats") {
             auto stats = map->get_grouping_stats();
             output(map->get_size(), n_ops, map->get_comparisons(),
-                    map->get_load_factor(), n_inserts, n_removes, n_finds,
-                    stats.total, stats.mean, stats.stdev, stats.min,
-                    stats.max);
+                   map->get_collisions(), map->get_load_factor(), n_inserts,
+                   n_removes, n_finds, stats.total, stats.mean, stats.stdev,
+                   stats.min, stats.max);
         } else if (op == "render") {
             map->render();
             std::cout << std::endl;
