@@ -1,5 +1,7 @@
 # Code Unit Test Data
 m 5
+insert -10 12312
+find -10
 insert 10 123
 get_grouping_stats
 insert 5 321
