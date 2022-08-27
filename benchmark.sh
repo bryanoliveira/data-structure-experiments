@@ -1,3 +1,4 @@
+#!/bin/bash
 TRIALS=10
 
 make clean

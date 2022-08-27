@@ -23,3 +23,12 @@ Também é recomendada a extensão [Clang-Format para VSCode](https://marketplac
   - `make hashmap` para compilar
   - `make run` para executar com parâmetros padrão
   - `make clean` para deletar arquivos gerados
+
+Note que o algoritmo de sondagem é definido em tempo de compilação, então lembre-se de executar `make clean` entre compilações com flags diferentes.
+
+## Reprodução dos experimentos
+
+Os experimentos executados estão descritos no script executável `benchmark.sh`.
+O código será compilado para cada tipo de sondagem e serão gerados novos conjuntos de dados na pasta `inputs/`.
+Após, o script irá executar o programa sobre os conjuntos de dados gerados, salvando estatísticas em `outputs/`.
+Essas estatísticas podem ser lidas com o notebook Jupyter `visualize.ipynb`, que gerará os gráficos utilizados no relatório.
