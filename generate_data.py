@@ -60,6 +60,7 @@ if __name__ == "__main__":
     file = open(args.file, "w")
     # add headers
     add_log(f"# {args.description}")
+    add_log(f"# Using seed {args.seed}")
     file.write(f"m {args.max_size}\n")
 
     # generate data
