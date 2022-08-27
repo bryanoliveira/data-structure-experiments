@@ -4,10 +4,10 @@ hashmap-l
 .vscode/
 build/
 
-inputs/
+inputs/*
 !inputs/test.txt
-outputs/
-runs/
+outputs/*
+runs/*
 
 # Prerequisites
 *.d

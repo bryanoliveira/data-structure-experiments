@@ -51,16 +51,23 @@ TKV float HashMap<TK, TV>::get_load_factor() {
 TKV Stats HashMap<TK, TV>::get_grouping_stats() {
     // calculate group sizes
     std::vector<uint> sizes;
-    uint group_size = 1;
-    TK last_key = table[0].key;
-    for (uint i = 1; i < HashMap::m; i++) {
-        if (hash(table[i].key) != hash(last_key)) {
+    uint group_size = 0;
+    std::cout << "Stats" << std::endl;
+    for (uint i = 0, last_hash = 0; i < HashMap::m; i++) {
+        std::cout << "i: " << i << " - k: " << HashMap::table[i].key << " ("
+                  << hash(table[i].key) << ") - v: " << HashMap::table[i].value
+                  << " - s: " << HashMap::table[i].status << " - g: " << group_size << std::endl;
+
+        if (hash(table[i].key) != last_hash && group_size > 0) {
             sizes.push_back(group_size);
-            group_size = 1;
-            last_key = table[i].key;
-        } else {
-            group_size++;
+            group_size = 0;
+            last_hash = hash(table[i].key);
         }
+
+        group_size += table[i].status != FREE;
+    }
+    if (group_size > 0) {
+        sizes.push_back(group_size);
     }
 
     // generate stats
@@ -142,7 +149,7 @@ TKV void HashMap<TK, TV>::remove(const TK key) {
 }
 
 TKV void HashMap<TK, TV>::render() {
-    for (uint i = 0; i < n; i++) {
+    for (uint i = 0; i < HashMap::m; i++) {
         if (table[i].status == OCCUPIED)
             std::cout << "█";
         else

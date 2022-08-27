@@ -58,14 +58,17 @@ int main(int argc, char **argv) {
                 // update stats
                 n_ops++;
                 n_inserts++;
+                log("Insert ", key);
             } else if (op == "remove") {
                 iss >> key;
                 map->remove(key);
                 // update stats
                 n_ops++;
                 n_removes++;
+                log("Remove ", key);
             } else if (op == "find") {
                 iss >> key;
+                log("Find ", key);
                 log("map[", key, "=", map->hash(key), "]: ", map->find(key));
                 // update stats
                 n_ops++;
