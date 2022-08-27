@@ -1,9 +1,9 @@
 #include <algorithm>
 #include <cmath>
+#include <exception>
 #include <iostream>
 #include <limits.h>
 #include <numeric>
-#include <stdexcept>
 #include <vector>
 
 #include "hash.hpp"
@@ -16,11 +16,15 @@
 #ifdef LINEAR_PROBING
 #define PROBE_STEP(k)                                                          \
     k = (hk + i) % m;                                                          \
-    i++;
+    i++;                                                                       \
+    if (k == hk)                                                               \
+        throw std::runtime_error("Linear probing resulted in a loop.");
 #else // quadratic probing
 #define PROBE_STEP(k)                                                          \
     k = (hk + i * i) % m;                                                      \
-    i++;
+    i++;                                                                       \
+    if (k == hk)                                                               \
+        throw std::runtime_error("Quadratic probing resulted in a loop.");
 #endif
 
 #define TKV template <typename TK, typename TV>
@@ -52,12 +56,7 @@ TKV Stats HashMap<TK, TV>::get_grouping_stats() {
     // calculate group sizes
     std::vector<uint> sizes;
     uint group_size = 0;
-    std::cout << "Stats" << std::endl;
     for (uint i = 0, last_hash = 0; i < HashMap::m; i++) {
-        std::cout << "i: " << i << " - k: " << HashMap::table[i].key << " ("
-                  << hash(table[i].key) << ") - v: " << HashMap::table[i].value
-                  << " - s: " << HashMap::table[i].status << " - g: " << group_size << std::endl;
-
         if (hash(table[i].key) != last_hash && group_size > 0) {
             sizes.push_back(group_size);
             group_size = 0;

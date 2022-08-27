@@ -17,8 +17,8 @@ remove 10
 stats
 get_grouping_stats
 find 5
-find 10
 find 6
 get_load_factor
 get_comparisons
 render
+find 10

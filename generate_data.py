@@ -47,6 +47,7 @@ if __name__ == "__main__":
         action="store_true",
         help="Add print operations to stdout",
     )
+    parser.add_argument("--log-every", "-l", type=int, default=10, help="Log every l operations")
     parser.add_argument("--seed", "-s", type=int, default=42, help="Random Seed")
     args = parser.parse_args()
 
@@ -59,9 +60,10 @@ if __name__ == "__main__":
     file = open(args.file, "w")
     # add headers
     add_log(f"# {args.description}")
-    file.write(f"m {args.table_size}\n")
+    file.write(f"m {args.max_size}\n")
 
     # generate data
+    ops = 0
     for _ in range(args.cycles):
         hashmap_state = []
         insert_pool = list(range(args.max_n))
@@ -74,8 +76,12 @@ if __name__ == "__main__":
             file.write(f"insert {n} {random.randint(0, INT_MAX)}\n")
             hashmap_state.append(n)
 
-        add_log(f"get_load_factor\n")
-        add_log(f"get_comparisons\n")
+            ops += 1
+            if ops % args.log_every == 0:
+                file.write(f"stats\n")
+
+        if ops % args.log_every == 0:
+            file.write(f"stats\n")
 
         # generate removals
         add_log(f"# Removing {args.remove_ops}")
@@ -83,6 +89,10 @@ if __name__ == "__main__":
         for i in range(args.remove_ops):
             n = hashmap_state.pop(0)
             file.write(f"remove {n}\n")
+
+            ops += 1
+            if ops % args.log_every == 0:
+                file.write(f"stats\n")
 
     file.close()
     print("Done")
