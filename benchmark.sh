@@ -1,5 +1,13 @@
 TRIALS=10
 
+make clean
+make LINEAR_PROBING=1
+cp hashmap hashmap-l
+make clean
+make
+cp hashmap hashmap-q
+
+
 function run_exp {
     ./hashmap-l -i "inputs/$1.txt" --tsv > "outputs/run_"$1"_linear.tsv"
     ./hashmap-q -i "inputs/$1.txt" --tsv > "outputs/run_"$1"_quad.tsv"
